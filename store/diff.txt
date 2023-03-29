@@ -1,0 +1,8 @@
+Способ запустить в консоли управление. А не в терминале. Главный пункт: 1. Потом остальное
+1) from store.wsgi import *
+2) from products.models import ProductCategory
+
+
+А это запуск дополнительной шелл панели в терминале
+3) python manage.py shell_plus
+
