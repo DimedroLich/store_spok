@@ -22,8 +22,8 @@ from products import views as pviews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', pviews.index, name = 'index'),
-    path('products/', include('products.urls')),
+    path('', pviews.index, name='index'),
+    path('products/', include('products.urls',namespace='products'))
 ]
 
 if settings.DEBUG:

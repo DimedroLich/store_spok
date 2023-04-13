@@ -1,0 +1,19 @@
+Способ запустить в консоли управление. А не в терминале. Главный пункт: 1. Потом остальное
+1) from movies_base.wsgi import *
+2) from movie_app.models import Movie
+
+
+3) Установка продвинутого красивого shell'a
+    pip install django-extensions
+    pip install ipython
+
+    идем в settings.py ->  INSTALLED_APPS и добавляем приложение django_extensions
+
+    запускаем через: 'python manage.py shell_plus --print-sql'
+
+4) Получить информацию о выполненных sql запросах
+    from django.db import connection
+    connection.queries
+    
+5) Сдампить текущую БД в JSON файл  
+   python manage.py dumpdata products.Product > goods.json 
