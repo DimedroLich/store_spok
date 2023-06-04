@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .forms import UserLoginForm
+from .forms import UserLoginForm, UserRegistrationForm
 from django.contrib import auth
 
 
@@ -26,4 +26,18 @@ def login(request):
 
 
 def registration(request):
-    return render(request, 'users/registration.html')
+    """Обрабатывает страницу регистрации пользователя"""
+    if request.method == 'POST':
+        form = UserRegistrationForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('users:login')
+
+    form = UserRegistrationForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'users/registration.html', context=context)
+
+def profile(request):
+    return render(request,'users/profile.html')
