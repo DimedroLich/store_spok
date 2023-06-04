@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% block title %} {% endblock %}</title>
+    <title>{% block title %} {{title}} {% endblock %}</title>
     <!-- Bootstrap core CSS -->
     <link href=" {% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     {% block css %} {% endblock %}
@@ -40,7 +40,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li>
-                            <a class="dropdown-item" href="users/profile.html">Профиль</a>
+                            <a class="dropdown-item" href="{% url 'users:profile' %}">Профиль</a>
                         </li>
                         <li><a class="dropdown-item" href="orders/orders.html">Заказы</a></li>
                         <li><a class="dropdown-item" href="#">Админ-панель</a></li>

@@ -1,5 +1,5 @@
-from django.shortcuts import render,redirect
-from .forms import UserLoginForm, UserRegistrationForm
+from django.shortcuts import render, redirect
+from .forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from django.contrib import auth
 
 
@@ -32,12 +32,31 @@ def registration(request):
         if form.is_valid():
             form.save()
             return redirect('users:login')
-
+        else:
+            print(form.errors)  # Позволяет посмотреть ошибки, если форма не проходит валидацию
     form = UserRegistrationForm()
     context = {
         'form': form
     }
+
     return render(request, 'users/registration.html', context=context)
 
+
 def profile(request):
-    return render(request,'users/profile.html')
+    """
+    Обрабатывает страницу профиля авторизованного пользователя
+    Позволяет редактировать её
+    """
+    if request.method == 'POST':
+        form = UserProfileForm(instance=request.user, data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('users:profile')
+        else:
+            print(form.errors)  # Позволяет посмотреть ошибки, если форма не проходит валидацию
+    form = UserProfileForm(instance=request.user)
+    context = {
+        'title': 'Store - Профиль',
+        'form': form,
+    }
+    return render(request, 'users/profile.html', context=context)
