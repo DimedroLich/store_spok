@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from .forms import UserLoginForm, UserRegistrationForm, UserProfileForm
-from django.contrib import auth
+from django.contrib import auth, messages
 
-
+users = {
+    'loh petuh': 'shmigadriga77654',
+    'Фёдор Гриб': 'helpmeimstuck1564',
+}
 # Create your views here.
 
 def login(request):
@@ -17,8 +20,8 @@ def login(request):
             if user:
                 auth.login(request, user)
                 return redirect('index')
-
-    form = UserLoginForm()  # Логика, если метод = GET
+    else:
+        form = UserLoginForm()  # Логика, если метод = GET
     context = {
         'form': form
     }
@@ -31,10 +34,12 @@ def registration(request):
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,'Вы успешно зарегистрировались!')
             return redirect('users:login')
         else:
             print(form.errors)  # Позволяет посмотреть ошибки, если форма не проходит валидацию
-    form = UserRegistrationForm()
+    else:
+        form = UserRegistrationForm()
     context = {
         'form': form
     }
