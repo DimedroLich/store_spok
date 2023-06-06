@@ -22,7 +22,7 @@ from products import views as pviews
 
 urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls,name='admin'),
     path('', pviews.index, name='index'),
     path('products/', include('products.urls', namespace='products')),
     path('users/', include('users.urls', namespace='users')),

@@ -3,9 +3,11 @@ from .forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from django.contrib import auth, messages
 
 users = {
-    'loh petuh': 'shmigadriga77654',
+    'ptiza-senica': 'shmigadriga77654',
     'Фёдор Гриб': 'helpmeimstuck1564',
 }
+
+
 # Create your views here.
 
 def login(request):
@@ -34,7 +36,7 @@ def registration(request):
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request,'Вы успешно зарегистрировались!')
+            messages.success(request, 'Вы успешно зарегистрировались!')
             return redirect('users:login')
         else:
             print(form.errors)  # Позволяет посмотреть ошибки, если форма не проходит валидацию
@@ -65,3 +67,9 @@ def profile(request):
         'form': form,
     }
     return render(request, 'users/profile.html', context=context)
+
+
+def logout(request):
+    """Контроллер выхода из авторизованного пользователя"""
+    auth.logout(request)
+    return redirect('index')
