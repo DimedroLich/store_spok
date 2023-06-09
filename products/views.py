@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from .models import Product, ProductCategory
+from django.shortcuts import render, redirect
+from .models import Product, ProductCategory, Basket
+from users.models import User
 from django.views.generic import ListView, DetailView
 
 
@@ -14,7 +15,7 @@ def index(request):
 
 
 class ProductsViev(ListView):
-    """Отображение всех продурктов из б/д"""
+    """Отображение всех товаров из б/д"""
     template_name = 'products/products.html'
     model = Product
     context_object_name = 'products'
@@ -33,6 +34,27 @@ class ProductsViev(ListView):
 #         'categories' : ProductCategory.objects.all()
 #     }
 #     return render(request,'products/products.html',context=context)
+
+def basket_add(request, product_id):
+    """Контроллер добавления продукта в корзину товаров. Называется 'обработчик событий'"""
+    product = Product.objects.get(id=product_id)
+    baskets = Basket.objects.filter(user=request.user, product=product)
+
+    if not baskets.exists(): # Если в корзине нет никаких товаров
+        Basket.objects.create(user=request.user, product=product, quantity=1)
+    else:   # Если есть, увеличиваем количество товара на 1
+        basket = baskets.first()
+        basket.quantity += 1
+        basket.save()
+
+    return redirect(request.META['HTTP_REFERER']) # Возвращение на ту страницу, где пользователь выполнял действие
+
+
+def basket_remove(request, basket_id):
+    """Контроллер обработчик события. Удаление товара из корзины"""
+    basket = Basket.objects.get(id=basket_id)
+    basket.delete()
+    return redirect(request.META['HTTP_REFERER']) # Возвращение на ту страницу, где пользователь выполнял действие
 
 
 def about_product(request, product_id):

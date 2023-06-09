@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from .forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from django.contrib import auth, messages
+from products.models import Basket
 
 users = {
     'ptiza-senica': 'shmigadriga77654',
-    'Фёдор Гриб': 'helpmeimstuck1564',
+    'fedyabedya': 'helpmeimstuck1564',
 }
 
 
@@ -65,6 +66,7 @@ def profile(request):
     context = {
         'title': 'Store - Профиль',
         'form': form,
+        'basket' : Basket.objects.filter(user=request.user), # Передача корзины в шаблон profile, который в свою очередь включает шаблон basket через тэг
     }
     return render(request, 'users/profile.html', context=context)
 
