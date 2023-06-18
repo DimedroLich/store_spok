@@ -52,8 +52,8 @@ def registration(request):
 
 def profile(request):
     """
-    Обрабатывает страницу профиля авторизованного пользователя
-    Позволяет редактировать её
+    Обрабатывает страницу профиля авторизованного пользователя.
+    Позволяет редактировать её.
     """
     if request.method == 'POST':
         form = UserProfileForm(instance=request.user, data=request.POST, files=request.FILES)
@@ -62,11 +62,17 @@ def profile(request):
             return redirect('users:profile')
         else:
             print(form.errors)  # Позволяет посмотреть ошибки, если форма не проходит валидацию
-    form = UserProfileForm(instance=request.user)
+    else:
+        form = UserProfileForm(instance=request.user)
+
+    baskets = Basket.objects.filter(user=request.user)
+    # total_sum = sum(basket.sum() for basket in baskets)
+    # total_quantity = sum(basket.quantity for basket in baskets)
+
     context = {
         'title': 'Store - Профиль',
         'form': form,
-        'basket' : Basket.objects.filter(user=request.user), # Передача корзины в шаблон profile, который в свою очередь включает шаблон basket через тэг
+        'basket': baskets,  # Передача корзины в шаблон profile, который в свою очередь включает шаблон basket через тэг
     }
     return render(request, 'users/profile.html', context=context)
 

@@ -29,12 +29,37 @@ class Product(models.Model):
         return reverse('about', kwargs={"product_id": self.id})
 
 
+class BasketQueryset(models.QuerySet):
+    """Дополнительный класс для корзины. Специально для методов"""
+
+    def total_sum(self):
+        """
+        Метод возвращает общую стоимость всех товаров в корзине.
+        Используется в подшаблоне basket шаблона profile
+        """
+        return sum(basket.sum() for basket in self)
+
+    def total_quantity(self):
+        """
+        Метод возвращает общую сумму всех товаров в корзине.
+        Используется в подшаблоне basket шаблона profile
+        """
+        return sum(basket.quantity for basket in self)
+
+
 class Basket(models.Model):
     """Модель отвечает за представление корзины товаров в бд"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
     created_timestamp = models.DateTimeField(auto_now_add=True) # Поле заполняется автоматически при создании нового объекта
+    objects = BasketQueryset.as_manager() # Указываем нами созданный класс как objects для доступа через Basket.objects.something
 
     def __str__(self):
         return f'Корзина для {self.user.username} | Продукт: {self.product.name}'
+
+    def sum(self):
+        """Метод возвращает сумму за товар в корзине"""
+        return self.quantity * self.product.price
+
+
