@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 from .models import Product, ProductCategory, Basket
 from users.models import User
 from django.views.generic import ListView, DetailView
@@ -35,6 +37,7 @@ class ProductsViev(ListView):
 #     }
 #     return render(request,'products/products.html',context=context)
 
+@login_required   # Проверка залогинен ли пользователь если нет, происходит редирект на страницу логина. Страница редиректа указана в settings
 def basket_add(request, product_id):
     """Контроллер добавления продукта в корзину товаров. Называется 'обработчик событий'"""
     product = Product.objects.get(id=product_id)
@@ -49,7 +52,7 @@ def basket_add(request, product_id):
 
     return redirect(request.META['HTTP_REFERER']) # Возвращение на ту страницу, где пользователь выполнял действие
 
-
+@login_required
 def basket_remove(request, basket_id):
     """Контроллер обработчик события. Удаление товара из корзины"""
     basket = Basket.objects.get(id=basket_id)

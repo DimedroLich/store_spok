@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
-from .forms import UserLoginForm, UserRegistrationForm, UserProfileForm
+from django.contrib.auth.decorators import login_required
 from django.contrib import auth, messages
+
+from .forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from products.models import Basket
 
 users = {
@@ -49,7 +51,7 @@ def registration(request):
 
     return render(request, 'users/registration.html', context=context)
 
-
+@login_required
 def profile(request):
     """
     Обрабатывает страницу профиля авторизованного пользователя.
@@ -66,8 +68,6 @@ def profile(request):
         form = UserProfileForm(instance=request.user)
 
     baskets = Basket.objects.filter(user=request.user)
-    # total_sum = sum(basket.sum() for basket in baskets)
-    # total_quantity = sum(basket.quantity for basket in baskets)
 
     context = {
         'title': 'Store - Профиль',

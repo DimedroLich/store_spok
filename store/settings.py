@@ -58,7 +58,6 @@ INTERNAL_IPS = [
     # ...
 ]
 
-
 ROOT_URLCONF = 'store.urls'
 
 TEMPLATES = [
@@ -137,3 +136,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Users
 AUTH_USER_MODEL = 'users.User'
+LOGIN_URL = 'users:login'  # Например для декоратора login_required из products:views и users:views
