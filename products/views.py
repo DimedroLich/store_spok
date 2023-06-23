@@ -34,17 +34,17 @@ def index(request):
 
 
 def products(request, category_id=None,
-             page=1):  # Если категория не передаётся, то дефолтное значение = None, иначе функция будет требовать аргумент. Аргумент page - нужен для пагинатора
+             page_number=1):  # Если категория не передаётся, то дефолтное значение = None, иначе функция будет требовать аргумент. Аргумент page - нужен для пагинатора
     """
     Получение списка либо всех продуктов в магазине, либо продуктов по выбранной категории
     """
     products = Product.objects.filter(
         category_id=category_id) if category_id else Product.objects.all()  # Если категория передана, фильтруем товары по ней. Если нет, берём все товары
     paginator = Paginator(object_list=products, per_page=2) # Добавление пагинатора для постраничного вывода товаров
-    # products_paginator =
+    products_paginator = paginator.page(page_number)
     context = {
         'title': 'Товары в магазине Бибасика Бобова',
-        'products': products,
+        'products': products_paginator, # Передаём именно пагинатор. Это то же самый queryset, что и был. Но с методами для работы с пагинаторами
         'categories': ProductCategory.objects.all()
     }
     return render(request, 'products/products.html', context=context)
