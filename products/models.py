@@ -12,6 +12,11 @@ class ProductCategory(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        """Класс отвечает за дополнительные настройки внутри модели"""
+        verbose_name = 'Категория' # Отображение названия категории в админке
+        verbose_name_plural = 'Категории'
+
 
 class Product(models.Model):
     name = models.CharField(max_length=256)
@@ -27,6 +32,11 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('about', kwargs={"product_id": self.id})
+
+    class Meta:
+        """Класс отвечает за дополнительные настройки внутри модели"""
+        verbose_name = 'Товар' # Отображение названия категории в админке
+        verbose_name_plural = 'Товары'
 
 
 class BasketQueryset(models.QuerySet):
