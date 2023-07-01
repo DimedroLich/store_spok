@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
+
 from django.views.generic import ListView, DetailView, TemplateView
+
 
 from .models import Product, ProductCategory, Basket
 from users.models import User
@@ -15,14 +16,6 @@ class IndexView(TemplateView):  # Базовый темплейт для ото�
     extra_context = {
         'title': 'Best Products from Bibasik Bobov',
     }
-
-
-# def index(request):
-#     context = {
-#         'title': 'Best Products from Bibasik Bobov',
-#         "username": 'Bibasik Bobov',
-#     }
-#     return render(request, 'products/index.html', context=context)
 
 
 # def products(request, category_id=None,
@@ -44,7 +37,7 @@ class IndexView(TemplateView):  # Базовый темплейт для ото�
 class ProductsListViev(ListView):
     """
     Отображение всех товаров из б/д
-    CBV работает корректно, но для отображения фильтрованных товаров по категориям, пока вернёмся к функции
+    Либо отображение товаров по выбранной категории
     """
     template_name = 'products/products.html'
     model = Product
