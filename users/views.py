@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-
 from django.contrib import auth
 from django.views.generic.edit import CreateView
 from django.views.generic import UpdateView
+from django.contrib.auth.views import LoginView
 
 from django.urls import reverse_lazy
 
@@ -19,24 +19,33 @@ users = {
 
 # Create your views here.
 
-def login(request):
-    """Обрабатывает страницу логина"""
-    if request.method == 'POST':
-        form = UserLoginForm(data=request.POST)
-        if form.is_valid():  # Обязательная валидация при обработке POST
-            username = request.POST['username']
-            password = request.POST['password']
-            user = auth.authenticate(username=username,
-                                     password=password)  # Аутентификация пользователся с помощью переданных через POST данных
-            if user:
-                auth.login(request, user)
-                return redirect('index')
-    else:
-        form = UserLoginForm()  # Логика, если метод = GET
-    context = {
-        'form': form
-    }
-    return render(request, 'users/login.html', context=context)
+# def login(request):
+#     """Обрабатывает страницу логина"""
+#     if request.method == 'POST':
+#         form = UserLoginForm(data=request.POST)
+#         if form.is_valid():  # Обязательная валидация при обработке POST
+#             username = request.POST['username']
+#             password = request.POST['password']
+#             user = auth.authenticate(username=username,
+#                                      password=password)  # Аутентификация пользователся с помощью переданных через POST данных
+#             if user:
+#                 auth.login(request, user)
+#                 return redirect('index')
+#     else:
+#         form = UserLoginForm()  # Логика, если метод = GET
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'users/login.html', context=context)
+
+class UserLoginView(LoginView):
+    """
+    CBV для логинизации пользователей вместо FBV выше
+    В CBV логика авторизации заняла всего 3 строки, в отличие от FBV
+    """
+    template_name = 'users/login.html'
+    form_class = UserLoginForm
+    # success_url = reverse_lazy('index')
 
 
 # def registration(request):
@@ -111,8 +120,3 @@ class UserProfileView(UpdateView):
         """Куда происходит редирект при успешном изменении"""
         return reverse_lazy('users:profile', args=(self.object.id,))
 
-
-def logout(request):
-    """Контроллер выхода из авторизованного пользователя"""
-    auth.logout(request)
-    return redirect('index')

@@ -137,3 +137,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Users
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = 'users:login'  # Например для декоратора login_required из products:views и users:views
+LOGIN_REDIRECT_URL = '/' # Страница, куда происходит редирект при логинизации через CBV UserLoginView. Так редирект идёт на главную стр.
+LOGOUT_REDIRECT_URL = '/' # Страница редиректи при LogOut.
