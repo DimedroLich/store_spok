@@ -138,4 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = 'users:login'  # Например для декоратора login_required из products:views и users:views
 LOGIN_REDIRECT_URL = '/' # Страница, куда происходит редирект при логинизации через CBV UserLoginView. Так редирект идёт на главную стр.
-LOGOUT_REDIRECT_URL = '/' # Страница редиректи при LogOut.
+LOGOUT_REDIRECT_URL = '/' # Страница редиректа при LogOut.
+
+
+# Sending emails
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

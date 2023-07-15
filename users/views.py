@@ -3,6 +3,7 @@ from django.contrib import auth
 from django.views.generic.edit import CreateView
 from django.views.generic import UpdateView
 from django.contrib.auth.views import LoginView
+from django.contrib.messages.views import SuccessMessageMixin
 
 from django.urls import reverse_lazy
 
@@ -13,7 +14,8 @@ from .models import User
 users = {
     'ptiza-senica': 'shmigadriga77654',
     'fedyabedya': 'helpmeimstuck1564',
-    'gugugaga': 'eshkerre6542213'
+    'gugugaga': 'eshkerre6542213',
+    'dildo_drogo_mandrago': 'Huliperdapupolo7712',
 }
 
 
@@ -66,7 +68,7 @@ class UserLoginView(LoginView):
 #
 #     return render(request, 'users/registration.html', context=context)
 
-class UserRegistrationView(CreateView):
+class UserRegistrationView(SuccessMessageMixin, CreateView):  # Все миксины пишутся первыми при наследовании
     """
     Отвечает за регистрацию новых пользователей как FunctionBV-registration
     FBV отвечающий за такую же регистрацию - выше. Можно сравнить насколько CBV удобнее
@@ -76,6 +78,7 @@ class UserRegistrationView(CreateView):
     template_name = 'users/registration.html'
     success_url = reverse_lazy('users:login')
     extra_context = {'title': 'Store - Регистрация'}
+    success_message = 'Вы успешно зарегистрировались!'  # Сообщение для вывода при успешной регистрации. Благодаря миксину SuccessMessageMixin
 
 
 # @login_required
@@ -105,6 +108,7 @@ class UserRegistrationView(CreateView):
 
 
 class UserProfileView(UpdateView):
+    """Отвечает за страницу профиля пользователя"""
     model = User
     form_class = UserProfileForm
     template_name = 'users/profile.html'
@@ -119,4 +123,3 @@ class UserProfileView(UpdateView):
     def get_success_url(self):
         """Куда происходит редирект при успешном изменении"""
         return reverse_lazy('users:profile', args=(self.object.id,))
-
