@@ -16,6 +16,7 @@ users = {
     'fedyabedya': 'helpmeimstuck1564',
     'gugugaga': 'eshkerre6542213',
     'dildo_drogo_mandrago': 'Huliperdapupolo7712',
+    'huanitto_pidaritto': "2281488mivasHuesosim",
 }
 
 
@@ -114,12 +115,6 @@ class UserProfileView(UpdateView):
     form_class = UserProfileForm
     template_name = 'users/profile.html'
     extra_context = {'title': 'Store - Профиль'}
-
-    def get_context_data(self, **kwargs):
-        """Добавление новых переменных и передача их в шаблон"""
-        context = super(UserProfileView, self).get_context_data()
-        context['basket'] = Basket.objects.filter(user=self.object)
-        return context
 
     def get_success_url(self):
         """Куда происходит редирект при успешном изменении"""
